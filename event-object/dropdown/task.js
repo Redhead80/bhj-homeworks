@@ -3,8 +3,7 @@ const dropdownList = document.querySelector(".dropdown__list");
 dropdownValue.onclick = function () {
     if (dropdownList.classList == 'dropdown__list dropdown__list_active') {
         dropdownList.classList.remove('dropdown__list_active');
-    } 
-    else {
+    } else {
         dropdownList.classList.add('dropdown__list_active');
     }
 }
