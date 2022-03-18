@@ -1,23 +1,22 @@
-(() => {
-    const windowOne = document.getElementById("modal_main");
-    windowOne.classList.add("modal_active");
-})();
+const popup = document.getElementById("modal_main");
+popup.className = "modal modal_active";
+const successPopup = document.getElementById("modal_success");
+const showSuccess = document.querySelector(".show-success");
+const closePopup = document.querySelectorAll("div.modal__close");
 
-(() => {
-    const windowOne = document.getElementsByClassName("modal__close");
-    for (i = 0; i < windowOne.length; i++) {
-        windowOne[i].addEventListener("click", function () {
-            this.parentElement.parentElement.classList.remove("modal_active");
-        });
-    }
-})();
+for (i = 0; i < closePopup.length; i++) {
+  let element = closePopup.item(i);
+  element.onclick = close;
+    
+  function close() {
+    successPopup.className = "modal";
+    popup.className = "modal";
+  }
+}
 
-(() => {
-    const windowOne = document.getElementsByClassName("show-success");
-    for (i = 0; i < windowOne.length; i++) {
-        windowOne[i].addEventListener("click", function () {
-            const windowTwo = document.getElementById("modal_success");
-            windowTwo.classList.add("modal_active");
-        });
-    }
-})();
+function successOpen() {
+  popup.className = "modal";
+  successPopup.className = "modal modal_active";
+}
+
+showSuccess.onclick = successOpen;
