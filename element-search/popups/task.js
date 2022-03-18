@@ -1,17 +1,23 @@
-const modalMain = document.getElementById('modal_main');
-const modalSuccess = document.getElementById('modal_success');
+(() => {
+    const windowOne = document.getElementById("modal_main");
+    windowOne.classList.add("modal_active");
+})();
 
-modalMain.classList.add('modal_active');
+(() => {
+    const windowOne = document.getElementsByClassName("modal__close");
+    for (i = 0; i < windowOne.length; i++) {
+        windowOne[i].addEventListener("click", function () {
+            this.parentElement.parentElement.classList.remove("modal_active");
+        });
+    }
+})();
 
-document.getElementsByClassName('modal__close')[0].onclick = function() {
-    return modalMain.classList.remove('modal_active');
-}
-
-document.getElementsByClassName('show-success')[0].onclick = function() {
-    modalMain.classList.remove('modal_active');
-    return modalSuccess.classList.add('modal_active');
-}
-
-document.getElementsByClassName('modal__close')[2].onclick = function() {
-    return modalSuccess.classList.remove('modal_active');
-}
+(() => {
+    const windowOne = document.getElementsByClassName("show-success");
+    for (i = 0; i < windowOne.length; i++) {
+        windowOne[i].addEventListener("click", function () {
+            const windowTwo = document.getElementById("modal_success");
+            windowTwo.classList.add("modal_active");
+        });
+    }
+})();
