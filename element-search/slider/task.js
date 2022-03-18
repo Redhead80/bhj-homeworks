@@ -1,44 +1,46 @@
-const arrayItem = Array.from(document.getElementsByClassName('slider__item'));
-const arrowLeft = document.getElementsByClassName('slider__arrow_prev');
-const arrowRight = document.getElementsByClassName('slider__arrow_next');
-const arrayDots = Array.from(document.getElementsByClassName('slider__dot'));
-let n = 0;
+const sliders = Array.from(document.getElementsByClassName("slider__item"));
+const dots = Array.from(document.getElementsByClassName("slider__dot"));
 
-arrayDots[n].classList.add('slider__dot_active');
+const arrowPrev = document.querySelector(".slider__arrow_prev");
+const arrowNext = document.querySelector(".slider__arrow_next");
 
-function slideImg(arg) {
-    arrayItem.forEach((e, i) => {
-        if (e.classList.contains('slider__item_active')) {
-            arrayDots[i].classList.remove('slider__dot_active');
-            return e.classList.remove('slider__item_active');
-        }
-    })
-    arrayDots[arg].classList.add('slider__dot_active');
-    return arrayItem[arg].classList.add('slider__item_active');
+let activeSlider = 0;
+const allSliders = sliders.length;
+
+function removableSlide() {
+  sliders[activeSlider].className = "slider__item";
+  dots[activeSlider].className = "slider__dot";
 }
 
-arrowLeft[0].onclick = function() {
-    if (n === 0) {
-        n = 4;
-        return slideImg(n);
-    } else if (n !== 0) {
-        n -= 1;
-        return slideImg(n);
-    }
+function installableSlide() {
+  sliders[activeSlider].className = "slider__item slider__item_active";
+  dots[activeSlider].className = "slider__dot slider__dot_active";
 }
-arrowRight[0].onclick = function() {
-    if (n < 4) {
-        n += 1;
-        return slideImg(n);
-    } else if (n === 4) {
-        n = 0;
-        return slideImg(n);
-    }
+
+arrowPrev.onclick = function() {
+  removableSlide();
+  activeSlider--;
+
+  if (activeSlider < 0) { 
+    activeSlider = allSliders - 1;
+  }
+  installableSlide();
 }
-for (let i = 0; i < arrayDots.length; i++) {
-    arrayDots[i].onclick = function() {
-        slideImg(i);
-        arrayDots[i].classList.add('slider__dot_active');
-        return arrayItem[i].classList.add('slider__item_active');
-    }
+
+arrowNext.onclick = function() {
+  removableSlide();
+  activeSlider++;
+
+  if (activeSlider >= allSliders) {
+    activeSlider = 0;
+  }
+  installableSlide();
 }
+
+dots.forEach(function(dot, i) {
+  dot.onclick = () => {
+    removableSlide();
+    activeSlider = i;
+    installableSlide();
+  }
+});
