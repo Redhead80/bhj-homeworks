@@ -1,23 +1,19 @@
-let counter = 0;
-let tabActive = 0;
-let tabContentActive = 0;
-const menu = document.body.querySelectorAll(".tab");
-for (let i = 0; i < menu.length; i++) {
-    menu[i].addEventListener("click", function () {
-        this.classList.add("tab_active");
-        const content = document.body.querySelectorAll('.tab__content');
-        if (counter >= 1) {
-            tabActive.remove("tab_active");
-            tabContentActive.remove("tab__content_active");
-            if (counter > 3) {
-                counter = 0;
-                tabContentActive = 0;
-            }
+const tabs = Array.from(document.getElementsByClassName("tab"));
+const tabsContents = Array.from(document.getElementsByClassName("tab__content"));
 
-        }
-        content[i].classList.add('tab__content_active');
-        tabContentActive = content[i].classList;
-        tabActive = this.classList;
-        counter += 1;
-    })
+for (let i = 0; i < tabs.length; i++) {
+  const tab = tabs[i];
+  
+  tab.addEventListener("click", clickOnTabs);
+
+  function clickOnTabs() {
+    const activeTab = document.querySelector(".tab_active");
+    const activeTabContent = document.querySelector(".tab__content_active");
+
+    activeTab.classList.remove("tab_active");
+    activeTabContent.classList.remove("tab__content_active");
+
+    tab.classList.add("tab_active");
+    tabsContents[tabs.indexOf(tab)].classList.add("tab__content_active");
+  }
 }
