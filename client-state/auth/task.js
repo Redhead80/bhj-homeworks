@@ -18,8 +18,6 @@ signinBtn.addEventListener("click", (e) => {
       alert("Неверный логин/пароль");
     } else {
       welcomeUser();
-      userId.innerText = id;
-      localStorage.setItem("user", id);
     }
     signinForm.reset();
   });
