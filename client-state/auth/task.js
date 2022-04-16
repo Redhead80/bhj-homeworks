@@ -45,4 +45,4 @@ btnOut.addEventListener('click', (event) => {
   localStorage.removeItem('id');
   welcome.classList.remove('welcome_active');
   signin.classList.add('signin_active');
-}); b
+}); 
