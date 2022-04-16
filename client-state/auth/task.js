@@ -1,38 +1,68 @@
-const signin = document.getElementById("signin");
-const signinForm = document.getElementById("signin__form");
-const signinBtn = document.getElementById("signin__btn");
-const welcome = document.getElementById("welcome");
-const userId = document.getElementById("user_id");
-let user = localStorage.user_id;
+const signin = document.querySelector('#signin');
+const signinForm = document.querySelector('#signin__form');
+const signoutBtn = document.querySelector('#signout__btn');
+const welcome = document.querySelector('#welcome');
+const userId = document.querySelector('#user_id');
+const login = document.querySelectorAll('.control')[0];
+const password = document.querySelectorAll('.control')[1];
 
-signinBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  const xhr = new XMLHttpRequest();
-  const formData = new FormData(signinForm);
-  const URL = signinForm.getAttribute("action");
-  xhr.responseType = "json";
-  xhr.open("POST", URL);
+signinForm.action = '';
 
-  xhr.addEventListener("load", () => {
-    if (!xhr.response.success) {
-      alert("Неверный логин/пароль");
+authorization();
+
+function verification(e) {
+    if (login.value === '' || password.value === '') {
+        alert('Неверный логин/пароль');
+        signinForm.reset();
     } else {
-      welcomeUser();
-    }
+        let formData = new FormData(signinForm);
+        let resData;
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://netology-slow-rest.herokuapp.com/auth.php');
+        xhr.addEventListener('load', () => {
+            if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                resData = JSON.parse(xhr.responseText);
+                saveUser(resData);
+                getWelcome(resData);
+            };
+        });
+        xhr.send(formData);
+    };
+    e.preventDefault();
+};
+
+function saveUser(arg) {
+    if (arg.success === true) {
+        localStorage.setItem('user', arg.user_id);
+    };
+};
+
+function authorization() {
+    if (localStorage.user) {
+        getWelcome(localStorage.getItem('user'));
+    } else {
+        signin.classList.add('signin_active');
+    };
+};
+
+function getWelcome(arg) {
+    if (arg.success === true) {
+        signin.classList.remove('signin_active');
+        userId.textContent = arg.user_id;
+        welcome.classList.add('welcome_active');
+    } else {
+        alert('Неверный логин/пароль');
+        signinForm.reset();
+    };
+};
+
+function signOut() {
     signinForm.reset();
-  });
-  xhr.send(formData);
-});
+    welcome.classList.remove('welcome_active');
+    signin.classList.add('signin_active');
+    localStorage.removeItem('user');
+};
 
-function welcomeUser() {
-  signin.classList.remove("signin_active");
-  welcome.classList.add("welcome_active");
-}
+signinForm.addEventListener('submit', verification);
 
-window.addEventListener("load", () => {
-  const storageId = localStorage.getItem("user");
-  if (storageId) {
-    welcomeUser ();
-    userId.innerText = storageId;
-  }
-})
+signoutBtn.addEventListener('click', signOut)
